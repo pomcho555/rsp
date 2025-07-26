@@ -32,6 +32,3 @@ jobs:
 
       - name: Run tests
         run: cargo test --all --verbose
-
-      - name: Run tests with serial execution
-        run: cargo test -p utils -- --test-threads=1
