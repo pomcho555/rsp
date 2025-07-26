@@ -1,6 +1,7 @@
 use crate::error::RspError;
 use serde_yaml::{Mapping, Value};
 use std::fs;
+use std::io::{self, Read};
 
 pub struct Peeler;
 
@@ -23,7 +24,20 @@ impl Peeler {
         let content = fs::read_to_string(input_file)
             .map_err(|_| RspError::FileNotFound(input_file.to_string()))?;
 
-        let mut yaml_value: Value = serde_yaml::from_str(&content)?;
+        self.peel_content(&content, output_file)
+    }
+
+    pub fn peel_stdin(&self, output_file: Option<&String>) -> Result<(), RspError> {
+        let mut content = String::new();
+        io::stdin()
+            .read_to_string(&mut content)
+            .map_err(|e| RspError::Processing(format!("Failed to read from stdin: {e}")))?;
+
+        self.peel_content(&content, output_file)
+    }
+
+    fn peel_content(&self, content: &str, output_file: Option<&String>) -> Result<(), RspError> {
+        let mut yaml_value: Value = serde_yaml::from_str(content)?;
 
         self.process_yaml_value(&mut yaml_value)?;
 

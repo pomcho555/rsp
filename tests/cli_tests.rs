@@ -37,7 +37,7 @@ fn test_cli_peel_help() {
 
     let stdout = String::from_utf8(output.stdout).unwrap();
     assert!(stdout.contains("Peel raw strings from YAML files"));
-    assert!(stdout.contains("<FILE>"));
+    assert!(stdout.contains("[FILE]"));
     assert!(stdout.contains("--output"));
 }
 
@@ -154,14 +154,73 @@ fn test_cli_no_command() {
 }
 
 #[test]
-fn test_cli_peel_missing_argument() {
-    let output = Command::new("cargo")
+fn test_cli_peel_stdin() {
+    let yaml_content = r#"apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+data:
+  config.json: "{\n  \"hello\":\"world\",\n  \"foo\":\"bar\"\n}"
+"#;
+
+    let mut child = Command::new("cargo")
         .args(["run", "--", "peel"])
-        .output()
-        .expect("Failed to execute command");
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
+        .spawn()
+        .expect("Failed to start command");
 
-    assert!(!output.status.success());
+    if let Some(stdin) = child.stdin.as_mut() {
+        use std::io::Write;
+        stdin.write_all(yaml_content.as_bytes()).unwrap();
+    }
 
-    let stderr = String::from_utf8(output.stderr).unwrap();
-    assert!(stderr.contains("required") || stderr.contains("FILE"));
+    let output = child.wait_with_output().expect("Failed to read output");
+    assert!(output.status.success());
+
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert!(stdout.contains("config.json: |"));
+    assert!(stdout.contains("  \"hello\":\"world\","));
+    assert!(stdout.contains("  \"foo\":\"bar\""));
+}
+
+#[test]
+fn test_cli_peel_stdin_with_output_file() {
+    let yaml_content = r#"apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+data:
+  config.yaml: "hello: \"world\"\nfoo: \"bar\""
+"#;
+
+    let output_file = NamedTempFile::new().unwrap();
+    let output_path = output_file.path().to_str().unwrap();
+
+    let mut child = Command::new("cargo")
+        .args(["run", "--", "peel", "-o", output_path])
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
+        .spawn()
+        .expect("Failed to start command");
+
+    if let Some(stdin) = child.stdin.as_mut() {
+        use std::io::Write;
+        stdin.write_all(yaml_content.as_bytes()).unwrap();
+    }
+
+    let output = child.wait_with_output().expect("Failed to read output");
+    assert!(output.status.success());
+
+    // Check that the output was written to the file
+    let file_content = fs::read_to_string(output_path).unwrap();
+    assert!(file_content.contains("config.yaml: |"));
+    assert!(file_content.contains("hello: \"world\""));
+    assert!(file_content.contains("foo: \"bar\""));
+
+    // Check that success message was printed
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    assert!(stdout.contains("Output written to"));
 }

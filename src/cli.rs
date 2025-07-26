@@ -36,8 +36,8 @@ impl Cli {
                     .about("Peel raw strings from YAML files")
                     .arg(
                         Arg::new("file")
-                            .help("The YAML file to process")
-                            .required(true)
+                            .help("The YAML file to process (use stdin if not provided)")
+                            .required(false)
                             .value_name("FILE"),
                     )
                     .arg(
@@ -51,13 +51,12 @@ impl Cli {
     }
 
     fn handle_peel_command(&self, matches: &ArgMatches) -> Result<(), RspError> {
-        let input_file = matches
-            .get_one::<String>("file")
-            .ok_or_else(|| RspError::Processing("Input file is required".to_string()))?;
-
         let output_file = matches.get_one::<String>("output");
-
         let peeler = Peeler::new();
-        peeler.peel_file(input_file, output_file)
+
+        match matches.get_one::<String>("file") {
+            Some(input_file) => peeler.peel_file(input_file, output_file),
+            None => peeler.peel_stdin(output_file),
+        }
     }
 }
