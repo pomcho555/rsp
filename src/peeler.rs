@@ -59,7 +59,9 @@ impl Peeler {
     fn process_configmap(&self, map: &mut Mapping) -> Result<(), RspError> {
         if let Some(Value::String(kind)) = map.get(Value::String("kind".to_string())) {
             if kind == "ConfigMap" {
-                if let Some(Value::Mapping(data_map)) = map.get_mut(Value::String("data".to_string())) {
+                if let Some(Value::Mapping(data_map)) =
+                    map.get_mut(Value::String("data".to_string()))
+                {
                     self.process_data_section(data_map)?;
                 }
             }

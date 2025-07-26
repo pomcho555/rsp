@@ -140,8 +140,7 @@ not_a_configmap:
 
     // Should not process data since it's not a proper ConfigMap
     if let Value::Mapping(map) = &yaml_value {
-        if let Some(Value::Mapping(inner)) = map.get(Value::String("not_a_configmap".to_string()))
-        {
+        if let Some(Value::Mapping(inner)) = map.get(Value::String("not_a_configmap".to_string())) {
             if let Some(Value::Mapping(_data)) = inner.get(Value::String("data".to_string())) {
                 if let Some(Value::String(json_content)) =
                     _data.get(Value::String("config.json".to_string()))
