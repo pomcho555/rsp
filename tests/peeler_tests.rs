@@ -218,7 +218,7 @@ data:
 
         // Create temporary input file
         let mut input_file = NamedTempFile::new().unwrap();
-        write!(input_file, "{}", yaml_content).unwrap();
+        write!(input_file, "{yaml_content}").unwrap();
         let input_path = input_file.path().to_str().unwrap();
 
         // Create temporary output file
@@ -250,7 +250,7 @@ data:
         let invalid_yaml = "invalid: yaml: content: [unclosed";
 
         let mut input_file = NamedTempFile::new().unwrap();
-        write!(input_file, "{}", invalid_yaml).unwrap();
+        write!(input_file, "{invalid_yaml}").unwrap();
         let input_path = input_file.path().to_str().unwrap();
 
         let result = peeler.peel_file(input_path, None);

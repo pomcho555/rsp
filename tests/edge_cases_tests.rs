@@ -112,7 +112,7 @@ fn test_very_large_string() {
 
     // Create a large string with many lines
     let large_content = (0..1000)
-        .map(|i| format!("line{}: this is line number {}", i, i))
+        .map(|i| format!("line{i}: this is line number {i}"))
         .collect::<Vec<_>>()
         .join("\\n");
 
