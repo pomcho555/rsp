@@ -32,10 +32,10 @@ impl Peeler {
         match output_file {
             Some(file_path) => {
                 fs::write(file_path, output)?;
-                println!("Output written to {}", file_path);
+                println!("Output written to {file_path}");
             }
             None => {
-                print!("{}", output);
+                print!("{output}");
             }
         }
 
@@ -149,7 +149,7 @@ impl Peeler {
                 for (key, val) in map {
                     if let Value::String(key_str) = key {
                         self.write_indent(output, indent);
-                        output.push_str(&format!("{}:", key_str));
+                        output.push_str(&format!("{key_str}:"));
 
                         if let Value::String(string_val) = val {
                             if self.should_process_key(key_str) && string_val.contains('\n') {
