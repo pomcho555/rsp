@@ -32,15 +32,15 @@ jobs:
     - name: Create Release Archive
       run: |
         mkdir -p release
-        cp target/release/bigly release/
+        cp target/release/rsp release/
         cd release
-        tar -czf bigly-${{ runner.os }}.tar.gz bigly
+        tar -czf rsp-${{ runner.os }}.tar.gz rsp
       
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: bigly-${{ runner.os }}
-        path: release/bigly-${{ runner.os }}.tar.gz
+        name: rsp-${{ runner.os }}
+        path: release/rsp-${{ runner.os }}.tar.gz
         retention-days: 7
     
     - name: Create Release
@@ -52,5 +52,5 @@ jobs:
         body: Automated build from main branch
         draft: false
         prerelease: true
-        files: release/bigly-${{ runner.os }}.tar.gz
+        files: release/rsp-${{ runner.os }}.tar.gz
         token: ${{ secrets.GITHUB_TOKEN }}
