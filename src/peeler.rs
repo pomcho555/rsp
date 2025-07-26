@@ -1,24 +1,34 @@
-use serde_yaml::{Value, Mapping};
-use std::fs;
 use crate::error::RspError;
+use serde_yaml::{Mapping, Value};
+use std::fs;
 
 pub struct Peeler;
+
+impl Default for Peeler {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl Peeler {
     pub fn new() -> Self {
         Self
     }
 
-    pub fn peel_file(&self, input_file: &str, output_file: Option<&String>) -> Result<(), RspError> {
+    pub fn peel_file(
+        &self,
+        input_file: &str,
+        output_file: Option<&String>,
+    ) -> Result<(), RspError> {
         let content = fs::read_to_string(input_file)
             .map_err(|_| RspError::FileNotFound(input_file.to_string()))?;
-        
+
         let mut yaml_value: Value = serde_yaml::from_str(&content)?;
-        
+
         self.process_yaml_value(&mut yaml_value)?;
-        
+
         let output = self.serialize_yaml_with_pipes(&yaml_value)?;
-        
+
         match output_file {
             Some(file_path) => {
                 fs::write(file_path, output)?;
@@ -28,7 +38,7 @@ impl Peeler {
                 print!("{}", output);
             }
         }
-        
+
         Ok(())
     }
 
@@ -38,19 +48,19 @@ impl Peeler {
                 self.process_configmap(map)?;
             }
             _ => {
-                return Err(RspError::InvalidFormat("Expected YAML mapping at root level".to_string()));
+                return Err(RspError::InvalidFormat(
+                    "Expected YAML mapping at root level".to_string(),
+                ));
             }
         }
         Ok(())
     }
 
     fn process_configmap(&self, map: &mut Mapping) -> Result<(), RspError> {
-        if let Some(Value::String(kind)) = map.get(&Value::String("kind".to_string())) {
+        if let Some(Value::String(kind)) = map.get(Value::String("kind".to_string())) {
             if kind == "ConfigMap" {
-                if let Some(data_value) = map.get_mut(&Value::String("data".to_string())) {
-                    if let Value::Mapping(data_map) = data_value {
-                        self.process_data_section(data_map)?;
-                    }
+                if let Some(Value::Mapping(data_map)) = map.get_mut(Value::String("data".to_string())) {
+                    self.process_data_section(data_map)?;
                 }
             }
         }
@@ -58,7 +68,8 @@ impl Peeler {
     }
 
     fn process_data_section(&self, data_map: &mut Mapping) -> Result<(), RspError> {
-        let keys_to_process: Vec<_> = data_map.iter()
+        let keys_to_process: Vec<_> = data_map
+            .iter()
             .filter_map(|(key, value)| {
                 if let (Value::String(key_str), Value::String(value_str)) = (key, value) {
                     if self.should_process_key(key_str) {
@@ -76,13 +87,15 @@ impl Peeler {
             let processed = self.process_raw_string(&value_str)?;
             data_map.insert(key, Value::String(processed));
         }
-        
+
         Ok(())
     }
 
     pub fn should_process_key(&self, key: &str) -> bool {
-        key.ends_with(".yaml") || key.ends_with(".yml") || 
-        key.ends_with(".json") || key.ends_with(".toml")
+        key.ends_with(".yaml")
+            || key.ends_with(".yml")
+            || key.ends_with(".json")
+            || key.ends_with(".toml")
     }
 
     fn process_raw_string(&self, raw_string: &str) -> Result<String, RspError> {
@@ -93,7 +106,7 @@ impl Peeler {
     pub fn unescape_string(&self, escaped: &str) -> Result<String, RspError> {
         let mut result = String::new();
         let mut chars = escaped.chars().peekable();
-        
+
         while let Some(ch) = chars.next() {
             if ch == '\\' {
                 match chars.next() {
@@ -112,10 +125,9 @@ impl Peeler {
                 result.push(ch);
             }
         }
-        
+
         Ok(result)
     }
-
 
     pub fn serialize_yaml_with_pipes(&self, value: &Value) -> Result<String, RspError> {
         let mut output = String::new();
@@ -123,14 +135,20 @@ impl Peeler {
         Ok(output)
     }
 
-    fn serialize_value(&self, value: &Value, output: &mut String, indent: usize, _processed_keys: &mut std::collections::HashSet<String>) -> Result<(), RspError> {
+    fn serialize_value(
+        &self,
+        value: &Value,
+        output: &mut String,
+        indent: usize,
+        _processed_keys: &mut std::collections::HashSet<String>,
+    ) -> Result<(), RspError> {
         match value {
             Value::Mapping(map) => {
                 for (key, val) in map {
                     if let Value::String(key_str) = key {
                         self.write_indent(output, indent);
                         output.push_str(&format!("{}:", key_str));
-                        
+
                         if let Value::String(string_val) = val {
                             if self.should_process_key(key_str) && string_val.contains('\n') {
                                 output.push_str(" |\n");

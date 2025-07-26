@@ -107,7 +107,9 @@ Use github Actions, and do those kind of jobs to sustain the quality product. Yo
 
 ## Development style
 
-Firstly create a branch and the PR for each fix or feature enhancement. Then you can't merge this till human review approve it. You can also create an issue if you find a bug or points to be refactored.
+Firstly create a branch and the PR for each fix or feature enhancement. Then you can't merge this till human review approve it. You can also create an issue if you find a bug or points to be refactored. 
+
+IMPORTANT: Please check same things as CICD locally, before pushing any changes such as cargo test --all --verbose
 
 ## License
 

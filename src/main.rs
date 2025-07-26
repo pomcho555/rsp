@@ -1,4 +1,3 @@
-
 mod cli;
 mod error;
 mod peeler;

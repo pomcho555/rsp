@@ -82,3 +82,7 @@ cargo test --test edge_cases_tests # Edge case tests
 ```
 
 **Sample data:** `tests/test_data/sample_configmap.yaml` contains example input for manual testing.
+
+## Contribution
+
+IMPORTANT: Please check same cases locally as CICD does, before commit any changes such as `cargo test --all --verbose`
