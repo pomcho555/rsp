@@ -4,18 +4,43 @@ A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into p
 
 ## Installation
 
+### From Source
+
+1. Clone the repository:
 ```bash
-cargo build --release
+git clone <repository-url>
+cd rsp
 ```
 
-## Usage
+2. Build the project:
 
 ```bash
-# Process a YAML file and output to stdout
-rsp peel configmap.yaml
+# Install from source
+cargo install --path .
 
-# Process a YAML file and save to a file
-rsp peel configmap.yaml -o output.yaml
+# Or run directly
+cargo run -- "search_term"
+```
+
+3. The binary will be available at `target/release/rsp`
+
+### Prerequisites
+
+- Rust 1.70+ (uses Rust 2024 edition)
+- Cargo package manager
+
+## Get Started
+
+### Basic Usage
+
+Process a YAML ConfigMap file and output to stdout:
+```bash
+rsp input.yaml
+```
+
+Process a file and save to output file:
+```bash
+rsp input.yaml -o output.yaml
 ```
 
 ## What it does
@@ -77,4 +102,39 @@ The project uses GitHub Actions for continuous integration:
 
 ## License
 
-MIT
+This project is open source. Please check the repository for license information.
+
+## Contribution
+
+We welcome contributions! Please follow these guidelines:
+
+1. **Testing:** Run the full test suite before submitting changes:
+   ```bash
+   cargo test --all --verbose
+   ```
+
+2. **Code Quality:** Ensure your code passes all checks:
+   ```bash
+   cargo check
+   cargo clippy
+   ```
+
+3. **Documentation:** Update documentation for any new features or changes
+
+4. **Commit Messages:** Use clear, descriptive commit messages
+
+5. **Pull Requests:** 
+   - Create feature branches from the main branch
+   - Include tests for new functionality
+   - Ensure all CI checks pass
+
+### Project Structure
+
+- `src/main.rs` - Main CLI entry point
+- `src/cli.rs` - Command-line interface
+- `src/peeler.rs` - Core YAML processing logic
+- `src/error.rs` - Error handling
+- `tests/` - Comprehensive test suite
+- `specs/README.md` - Detailed specifications
+
+For more detailed development information, see `CLAUDE.md` in the project root.
