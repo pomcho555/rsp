@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+data:
+  raw-yaml-string.yaml: "\"hello\": \"test\"\n\"foo\": 22\n"
+  raw-json-string.json: "{\n  \"hello\":\"test\",\n  \"foo\":\"bar\"\n}"
+  raw-toml-string.toml: "hello = \"test\"\nfoo = \"bar\"\n"
+  normal-string: "This should not be processed"
