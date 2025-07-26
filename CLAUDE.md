@@ -51,4 +51,34 @@ cargo check
 
 ## Testing
 
-Test files are located in `tests/test_data/` directory. Use sample ConfigMaps to verify functionality.
+Comprehensive test suite covering:
+
+**Unit Tests (`tests/peeler_tests.rs`):**
+- String unescaping functionality (normal and edge cases)
+- ConfigMap processing logic
+- File extension detection
+- YAML serialization with pipe syntax
+- File I/O operations
+
+**Integration Tests (`tests/cli_tests.rs`):**
+- CLI command execution (help, version, peel)
+- File input/output handling
+- Error conditions and edge cases
+- Command-line argument parsing
+
+**Edge Case Tests (`tests/edge_cases_tests.rs`):**
+- Empty and malformed YAML files
+- Non-ConfigMap YAML documents
+- Large strings and complex escaping
+- Unicode content and special characters
+- Binary file handling
+
+**Run tests:**
+```bash
+cargo test                    # All tests
+cargo test --test peeler_tests    # Unit tests only
+cargo test --test cli_tests       # CLI integration tests
+cargo test --test edge_cases_tests # Edge case tests
+```
+
+**Sample data:** `tests/test_data/sample_configmap.yaml` contains example input for manual testing.

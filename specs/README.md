@@ -92,6 +92,19 @@ Here is the common sub commands and the options
 ## Directory structure
 Follow Rust CLI tool best practice.
 
+## Testing
+
+Please create some test cases including both normal input and unexpected input and place the code under ./tests
+
+## CICD
+
+Use github Actions, and do those kind of jobs to sustain the quality product. You only need to run those feature in ubuntu-latest for the time being. 
+
+- build
+- lint (including rustfmt, clippy)
+- tests
+- audit
+
 ## Development style
 
 Firstly create a branch and the PR for each fix or feature enhancement. Then you can't merge this till human review approve it. You can also create an issue if you find a bug or points to be refactored.

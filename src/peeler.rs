@@ -32,7 +32,7 @@ impl Peeler {
         Ok(())
     }
 
-    fn process_yaml_value(&self, value: &mut Value) -> Result<(), RspError> {
+    pub fn process_yaml_value(&self, value: &mut Value) -> Result<(), RspError> {
         match value {
             Value::Mapping(map) => {
                 self.process_configmap(map)?;
@@ -80,7 +80,7 @@ impl Peeler {
         Ok(())
     }
 
-    fn should_process_key(&self, key: &str) -> bool {
+    pub fn should_process_key(&self, key: &str) -> bool {
         key.ends_with(".yaml") || key.ends_with(".yml") || 
         key.ends_with(".json") || key.ends_with(".toml")
     }
@@ -90,7 +90,7 @@ impl Peeler {
         Ok(unescaped)
     }
 
-    fn unescape_string(&self, escaped: &str) -> Result<String, RspError> {
+    pub fn unescape_string(&self, escaped: &str) -> Result<String, RspError> {
         let mut result = String::new();
         let mut chars = escaped.chars().peekable();
         
@@ -117,7 +117,7 @@ impl Peeler {
     }
 
 
-    fn serialize_yaml_with_pipes(&self, value: &Value) -> Result<String, RspError> {
+    pub fn serialize_yaml_with_pipes(&self, value: &Value) -> Result<String, RspError> {
         let mut output = String::new();
         self.serialize_value(value, &mut output, 0, &mut std::collections::HashSet::new())?;
         Ok(output)

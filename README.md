@@ -52,6 +52,29 @@ RSP automatically processes string values for keys ending with:
 - `.json`
 - `.toml`
 
+## Testing
+
+Run the comprehensive test suite:
+
+```bash
+# Run all tests
+cargo test
+
+# Run specific test categories
+cargo test --test peeler_tests     # Core functionality
+cargo test --test cli_tests        # CLI integration  
+cargo test --test edge_cases_tests # Edge cases and error handling
+```
+
+## CI/CD
+
+The project uses GitHub Actions for continuous integration:
+
+- **Build**: Compiles the project
+- **Test**: Runs all test suites
+- **Lint**: Checks formatting (rustfmt) and code quality (clippy)
+- **Audit**: Scans for security vulnerabilities
+
 ## License
 
 MIT
