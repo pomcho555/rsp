@@ -1,5 +1,5 @@
 [package]
-name = "rsp"
+name = "rsp-cli"
 version = "0.1.0"
 edition = "2024"
 authors = ["pomcho555 <pomcho555@users.noreply.github.com>"]
