@@ -40,9 +40,6 @@ cd rsp
 ```bash
 # Install from source
 cargo install --path .
-
-# Or run directly
-cargo run -- "search_term"
 ```
 
 3. The binary will be available at `target/release/rsp`
