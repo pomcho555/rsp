@@ -32,12 +32,17 @@ cargo install --path .
 
 Process a YAML ConfigMap file and output to stdout:
 ```bash
-rsp input.yaml
+rsp peel input.yaml
 ```
 
 Process a file and save to output file:
 ```bash
-rsp input.yaml -o output.yaml
+rsp peel input.yaml -o output.yaml
+```
+
+Process a file from pipe:
+```bash
+cat input.yaml |rsp peel
 ```
 
 ## What it does
