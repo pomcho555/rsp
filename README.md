@@ -1,5 +1,9 @@
 # RSP (Raw String Peeler)
 
+[![Build Status](https://github.com/pomcho555/rsp/workflows/CI/badge.svg)](https://github.com/pomcho555/rsp/actions)
+[![Crates.io](https://img.shields.io/crates/v/rsp-cli.svg)](https://crates.io/crates/rsp-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into properly formatted multi-line strings using YAML's pipe (`|`) syntax.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
