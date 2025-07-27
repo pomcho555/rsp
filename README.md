@@ -11,6 +11,7 @@ A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into p
 ## Table of Contents
 
 - [Installation](#installation)
+  - [From Crates.io](#from-cratesio)
   - [From Source](#from-source)
   - [Prerequisites](#prerequisites)
 - [Get Started](#get-started)
@@ -26,6 +27,14 @@ A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into p
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
+
+### From Crates.io
+
+Install directly from crates.io using cargo:
+
+```bash
+cargo install rsp-cli
+```
 
 ### From Source
 
