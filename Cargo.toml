@@ -2,6 +2,18 @@
 name = "rsp"
 version = "0.1.0"
 edition = "2024"
+authors = ["pomcho555 <pomcho555@users.noreply.github.com>"]
+repository = "https://github.com/pomcho555/rsp"
+readme = "README.md"
+license = "MIT"
+keywords = ["cli","escaped strings","converter","formatter"]
+description = """
+A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into properly formatted multi-line strings.
+"""
+exclude = [
+    "specs/*",
+    ".github/*",
+]
 
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
