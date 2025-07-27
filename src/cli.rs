@@ -30,7 +30,7 @@ impl Cli {
     fn build_cli(&self) -> Command {
         Command::new("rsp")
             .about("Raw String Peeler - Convert escaped strings in YAML to readable format")
-            .version("0.1.0")
+            .version(env!("CARGO_PKG_VERSION"))
             .subcommand(
                 Command::new("peel")
                     .about("Peel raw strings from YAML files")
