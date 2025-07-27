@@ -2,8 +2,24 @@
 
 A Rust CLI tool that converts escaped strings embedded in YAML ConfigMaps into properly formatted multi-line strings using YAML's pipe (`|`) syntax.
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Installation](#installation)
+  - [From Source](#from-source)
+  - [Prerequisites](#prerequisites)
+- [Get Started](#get-started)
+  - [Basic Usage](#basic-usage)
+- [What it does](#what-it-does)
+- [Supported file types](#supported-file-types)
+- [Testing](#testing)
+- [CI/CD](#cicd)
+- [License](#license)
+- [Contribution](#contribution)
+  - [Project Structure](#project-structure)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
 
