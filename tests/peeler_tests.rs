@@ -1,5 +1,5 @@
-use rsp::error::RspError;
-use rsp::peeler::Peeler;
+use rsp_cli::error::RspError;
+use rsp_cli::peeler::Peeler;
 use serde_yaml::Value;
 use std::fs;
 use tempfile::NamedTempFile;

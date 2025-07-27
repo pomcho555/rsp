@@ -1,4 +1,4 @@
-use rsp::peeler::Peeler;
+use rsp_cli::peeler::Peeler;
 use serde_yaml::Value;
 use std::io::Write;
 use tempfile::NamedTempFile;
