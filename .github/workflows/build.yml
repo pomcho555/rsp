@@ -1,0 +1,56 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v4
+      
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+      
+    - name: Cache Cargo
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+  
+    - name: Build Release
+      run: cargo build --release
+      
+    - name: Create Release Archive
+      run: |
+        mkdir -p release
+        cp target/release/rsp release/
+        cd release
+        tar -czf rsp-${{ runner.os }}.tar.gz rsp
+      
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: rsp-${{ runner.os }}
+        path: release/rsp-${{ runner.os }}.tar.gz
+        retention-days: 7
+    
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: latest
+        name: Latest Build
+        body: Automated build from main branch
+        draft: false
+        prerelease: true
+        files: release/rsp-${{ runner.os }}.tar.gz
+        token: ${{ secrets.GITHUB_TOKEN }}
