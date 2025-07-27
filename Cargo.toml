@@ -22,5 +22,9 @@ serde_yaml = "0.9"
 anyhow = "1.0"
 thiserror = "1.0"
 
+[[bin]]
+name = "rsp"
+path = "src/main.rs"
+
 [dev-dependencies]
 tempfile = "3.0"
